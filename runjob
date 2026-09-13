@@ -1,0 +1,21 @@
+#!/bin/bash
+#BSUB -q e7v4ib                  # 指定作业队列
+#BSUB -J uncertainty            # 作业名称
+#BSUB -o %J.out                 # 标准输出
+#BSUB -e %J.err                 # 错误日志
+#BSUB -R "span[ptile=32]"
+#BSUB -n 32
+
+module load anaconda/3 # 加载集群自带的 Anaconda 模块
+source activate sas_env  # 激活你事先在登录节点创建的 Conda 环境
+
+export OMP_NUM_THREADS=4
+export MKL_NUM_THREADS=4
+export OPENBLAS_NUM_THREADS=4
+export VECLIB_MAXIMUM_THREADS=4
+export NUMEXPR_NUM_THREADS=4
+export TORCH_NUM_THREADS=4
+
+ulimit -a
+
+python main_LMCMA_HPC_1.py 
